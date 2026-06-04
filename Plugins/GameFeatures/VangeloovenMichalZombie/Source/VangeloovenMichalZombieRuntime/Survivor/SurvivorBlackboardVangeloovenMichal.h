@@ -2,20 +2,43 @@
 
 #pragma once
 
+#include <vector>
+
 #include "CoreMinimal.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Items/BaseItem.h"
 #include "UObject/Object.h"
+#include "VangeloovenMichalZombieRuntime/Utils/BlackboardExtensionsVangeloovenMichal.h"
 
-namespace my_namespace
-{
-	
-}
+#include "SurvivorBlackboardVangeloovenMichal.generated.h"
+
+// =====================================================
+// Keys
+// =====================================================
 
 namespace SurvivorBBItemsVangeloovenMichal
 {
 	inline const FName Actor{"SelfActor"};
-	inline const FName Pickup{"Pickup"};
+	inline const FName SeenItems{"SeenItems"};
+	inline const FName MoveTargetLocation{"MoveTargetLocation"};
 }
+
+// =====================================================
+// Blackboard custom data
+// =====================================================
+
+UCLASS()
+class VANGELOOVENMICHALZOMBIERUNTIME_API USeenItemsVangeloovenMichal : public UObject
+{
+	GENERATED_BODY()
+public:
+	
+	 std::vector<ABaseItem*> Items{};
+};
+
+// =====================================================
+// Blackboard type helper
+// =====================================================
 
 struct SurvivorBlackboardVangeloovenMichal
 {
@@ -37,14 +60,25 @@ struct SurvivorBlackboardVangeloovenMichal
 		Blackboard->SetValueAsObject(SurvivorBBItemsVangeloovenMichal::Actor, Actor);
 	}
 	
-	// --- Pickup ---
-	AActor* GetPickup() const
+	// --- Seen Objects ---
+	USeenItemsVangeloovenMichal* GetSeenItems() const
 	{
-		return Cast<AActor>(Blackboard->GetValueAsObject(SurvivorBBItemsVangeloovenMichal::Pickup));
+		return Cast<USeenItemsVangeloovenMichal>(Blackboard->GetValue<UBlackboardKeyType_TrackedObjectVangeloovenMichal>(SurvivorBBItemsVangeloovenMichal::SeenItems));
 	}
 
-	void SetPickup(AActor* Actor) const
+	void SetSeenItems(USeenItemsVangeloovenMichal* Objects) const
 	{
-		Blackboard->SetValueAsObject(SurvivorBBItemsVangeloovenMichal::Pickup, Actor);
+		Blackboard->SetValue<UBlackboardKeyType_TrackedObjectVangeloovenMichal>(SurvivorBBItemsVangeloovenMichal::SeenItems, Objects);
+	}
+	
+	// --- Move Target Location ---
+	FVector GetMoveTargetLocation() const
+	{
+		return Blackboard->GetValueAsVector(SurvivorBBItemsVangeloovenMichal::MoveTargetLocation);
+	}
+
+	void SetMoveTargetLocation(FVector Location) const
+	{
+		Blackboard->SetValueAsVector(SurvivorBBItemsVangeloovenMichal::MoveTargetLocation, Location);
 	}
 };
