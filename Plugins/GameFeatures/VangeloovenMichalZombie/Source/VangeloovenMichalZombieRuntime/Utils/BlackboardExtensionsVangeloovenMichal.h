@@ -7,6 +7,13 @@
 #include "BehaviorTree/Blackboard/BlackboardKeyType_Object.h"
 #include "BlackboardExtensionsVangeloovenMichal.generated.h"
 
+//======================================
+// Tracked Object
+//======================================
+
+//this key works similarly like the regular "object" 
+//	but instead owns the resource and will not trigger the gc when only the blackboard holds a reference
+
 UCLASS(EditInlineNew, meta=(DisplayName="TrackedObject"), MinimalAPI)
 class UBlackboardKeyType_TrackedObjectVangeloovenMichal : public UBlackboardKeyType_Object
 {
@@ -29,4 +36,3 @@ public:
 		Super::InitializeMemory(OwnerComp, MemoryBlock);
 	}
 };
-

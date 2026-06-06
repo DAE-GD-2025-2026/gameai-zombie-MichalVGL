@@ -7,6 +7,7 @@
 #include "Utils/LoggerVangeloovenMichal.h"
 
 #include "Survivor/SurvivorBlackboardVangeloovenMichal.h"
+#include "Village/House/House.h"
 
 
 UStudentPerceptorVangeloovenMichal::UStudentPerceptorVangeloovenMichal()
@@ -30,15 +31,15 @@ void UStudentPerceptorVangeloovenMichal::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("[StudentPerceptor] No inventory component found"));
 	}
 
-	APawn* Pawn = Cast<APawn>(GetOwner());
-	if (!Pawn) return;
-
-	AAIController* AIController = Cast<AAIController>(Pawn->GetController());
-	if (!AIController)
-	{
-		Logger::Console(TEXT("[StudentPerceptor] No aicontroller on the owner."));
-		return;
-	}
+	//APawn* Pawn = Cast<APawn>(GetOwner());
+	//if (!Pawn) return;
+//
+	//AAIController* AIController = Cast<AAIController>(Pawn->GetController());
+	//if (!AIController)
+	//{
+	//	Logger::Console(TEXT("[StudentPerceptor] No aicontroller on the owner."));
+	//	return;
+	//}
 
 	//SurvivorBlackboardVangeloovenMichal bb{AIController->GetBlackboardComponent()};
 
@@ -61,35 +62,60 @@ void UStudentPerceptorVangeloovenMichal::OnPerceptionUpdated(AActor* Actor, FAIS
 
 	SurvivorBlackboardVangeloovenMichal bb{AIController->GetBlackboardComponent()};
 
-	if (auto* pItem = Cast<ABaseItem>(Actor)
-		; pItem)
+	if (!bb.Blackboard)
+		return;
+
+	//add if item and unique
+	if (auto* pItem = Cast<ABaseItem>(Actor))
 	{
-		Logger::Screen(TEXT("Saw Item"));
+		auto* SeenItems = bb.GetSeenItems();
 
-		//InventoryComponent->GrabItem(0, pItem);
-
-		if (bb.Blackboard)
+		if (!SeenItems)
 		{
-			auto* SeenObjects = bb.GetSeenItems();
+			SeenItems = NewObject<UItemsVangeloovenMichal>(this);
+			bb.SetSeenItems(SeenItems);
+		}
 
-			if (!SeenObjects)
-			{
-				SeenObjects = NewObject<USeenItemsVangeloovenMichal>(this);
-				bb.SetSeenItems(SeenObjects);
-			}
-
-			if (std::ranges::find(SeenObjects->Items, pItem) == std::ranges::end(SeenObjects->Items))
-			{
-				SeenObjects->Items.push_back(pItem);
-			}
-
-			UE_LOG(LogTemp, Warning, TEXT("[StudentPerceptor] SeenObjects size: %i"),
-			       static_cast<int>(SeenObjects->Items.size()))
-			
-			std::ranges::for_each(SeenObjects->Items, [&](auto p)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("Item: %s"), *UEnum::GetValueAsString(p->GetItemType()));
-			});
+		if (std::ranges::find(SeenItems->Items, pItem) == std::ranges::end(SeenItems->Items))
+		{
+			SeenItems->Items.push_back(pItem);
+		}
+	} //add if house
+	else if (auto* pHouse = Cast<AHouse>(Actor))
+	{
+		auto* SeenHouses = bb.GetSeenHouses();
+		if (!SeenHouses)
+		{
+			SeenHouses = NewObject<UHousesVangeloovenMichal>(this);
+			bb.SetSeenHouses(SeenHouses);
+		}
+		
+		auto* ClearedHouses = bb.GetClearedHouses();
+		if (!ClearedHouses)
+		{
+			ClearedHouses = NewObject<UHousesVangeloovenMichal>(this);
+			bb.SetClearedHouses(ClearedHouses);
+		}
+		
+		if (std::ranges::find(SeenHouses->Houses, pHouse) == std::ranges::end(SeenHouses->Houses)	// not in seenhouses
+			&& std::ranges::find(ClearedHouses->Houses, pHouse) == std::ranges::end(ClearedHouses->Houses)) //also not cleared
+		{
+			SeenHouses->Houses.push_back(pHouse);
+		}
+	} // add if zombie
+	else if (auto* pZombie = Cast<ABaseZombie>(Actor))
+	{
+		auto* SeenZombies = bb.GetSeenZombies();
+		
+		if (!SeenZombies)
+		{
+			SeenZombies = NewObject<UZombiesVangeloovenMichal>(this);
+			bb.SetSeenZombies(SeenZombies);
+		}
+		
+		if (std::ranges::find(SeenZombies->Zombies, pZombie) == std::ranges::end(SeenZombies->Zombies))
+		{
+			SeenZombies->Zombies.push_back(pZombie);
 		}
 	}
 }

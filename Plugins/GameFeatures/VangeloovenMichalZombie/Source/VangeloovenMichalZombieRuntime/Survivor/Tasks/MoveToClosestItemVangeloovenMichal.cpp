@@ -18,10 +18,11 @@ EBTNodeResult::Type UMoveToClosestItemVangeloovenMichal::ExecuteTask(UBehaviorTr
 {
 	SurvivorBlackboardVangeloovenMichal bb{OwnerComp.GetBlackboardComponent()};
 	
+	
 	if (!bb.Blackboard)
 		return EBTNodeResult::Failed;
 	
-	USeenItemsVangeloovenMichal* SeenItems = bb.GetSeenItems();
+	UItemsVangeloovenMichal* SeenItems = bb.GetSeenItems();
 	if (!SeenItems)
 		return EBTNodeResult::Failed;
 	
@@ -31,6 +32,9 @@ EBTNodeResult::Type UMoveToClosestItemVangeloovenMichal::ExecuteTask(UBehaviorTr
 		&& pItem->GetItemType() == Type;
 	});
 	
+	//============
+	// Get the closest item and set the location
+	
 	AAIController* AI = OwnerComp.GetAIOwner();
 	if (!AI) return EBTNodeResult::Failed;
 
@@ -38,7 +42,6 @@ EBTNodeResult::Type UMoveToClosestItemVangeloovenMichal::ExecuteTask(UBehaviorTr
 	if (!Pawn) return EBTNodeResult::Failed;
 
 	FVector SurvivorPos = Pawn->GetActorLocation();
-	
 	auto itemIt = std::ranges::min_element(ValidItems, std::ranges::less{}, [&](ABaseItem* pItem) -> float
 	{
 		return FVector::DistSquared(pItem->ActorToWorld().GetLocation(), SurvivorPos);
@@ -47,6 +50,8 @@ EBTNodeResult::Type UMoveToClosestItemVangeloovenMichal::ExecuteTask(UBehaviorTr
 	if (itemIt != ValidItems.end())
 	{
 		bb.SetMoveTargetLocation((*itemIt)->ActorToWorld().GetLocation());
+		bb.SetCurrentTargetType(ETargetTypeVangeloovenMichal::Item);
+		bb.SetCurrentTargetObject(*itemIt);
 		return EBTNodeResult::Succeeded;
 	}
 	
