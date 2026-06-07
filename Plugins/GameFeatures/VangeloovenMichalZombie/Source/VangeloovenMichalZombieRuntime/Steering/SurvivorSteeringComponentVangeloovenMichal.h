@@ -21,7 +21,7 @@ protected:
 	virtual void BeginPlay() override;
 	
 	UPROPERTY(EditAnywhere, Category = "Steering")
-	float AutoOrientInterpSpeed = 8.f;
+	float AutoOrientInterpSpeed = 120.f;
 
 public:
 	// Called every frame

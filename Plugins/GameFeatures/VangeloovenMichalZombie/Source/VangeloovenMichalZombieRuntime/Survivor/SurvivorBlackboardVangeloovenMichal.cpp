@@ -16,7 +16,17 @@ USurvivorSteeringVangeloovenMichal::USurvivorSteeringVangeloovenMichal()
 	WeightedBehaviors.emplace_back(Flee.get(), 0.f);
 	MoveBehavior = std::make_unique<BlendedSteeringVangeloovenMichal>(WeightedBehaviors);
 	
-	LookBehavior = std::make_unique<FaceVangeloovenMichal>();
+	//LookBehavior = std::make_unique<FaceVangeloovenMichal>();
+}
+
+BlendedSteeringVangeloovenMichal* USurvivorSteeringVangeloovenMichal::GetMoveBehavior() const
+{
+	return static_cast<BlendedSteeringVangeloovenMichal*>(MoveBehavior.get());
+}
+
+FaceVangeloovenMichal* USurvivorSteeringVangeloovenMichal::GetLookBehavior() const
+{
+	return static_cast<FaceVangeloovenMichal*>(Face.get());
 }
 
 SteeringBehaviorVangeloovenMichal* USurvivorSteeringVangeloovenMichal::GetMoveTo() const

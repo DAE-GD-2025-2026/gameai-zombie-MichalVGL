@@ -38,35 +38,6 @@ EBTNodeResult::Type UExecuteMoveToVangeloovenMichal::ExecuteTask(UBehaviorTreeCo
 	
 	Steering->GetMoveTo()->SetTarget(TargetData);
 
-	return EBTNodeResult::InProgress;
+	return EBTNodeResult::Succeeded;
 }
-
-void UExecuteMoveToVangeloovenMichal::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
-{
-	ASurvivorPawn* Pawn = Cast<ASurvivorPawn>(OwnerComp.GetAIOwner()->GetPawn());
-	if (!Pawn)
-	{
-		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
-		return;
-	}
-	
-	SurvivorBlackboardVangeloovenMichal BB{ OwnerComp.GetBlackboardComponent() };
-
-	const float DistSq = FVector2D::DistSquared(
-		FVector2D{ Pawn->GetActorLocation() },
-		FVector2D{ BB.GetMoveTargetLocation() }
-	);
-
-	if (DistSq < AcceptanceRadiusSq)
-	{
-		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-		BB.SetEnableMovement(false);
-	}
-}
-
-EBTNodeResult::Type UExecuteMoveToVangeloovenMichal::AbortTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
-{
-	return Super::AbortTask(OwnerComp, NodeMemory);
-}
-
 

@@ -39,11 +39,9 @@ class MoveToVangeloovenMichal : public SteeringBehaviorVangeloovenMichal
 public:
 	virtual ~MoveToVangeloovenMichal() override = default;
 
-protected:
 	virtual SteeringOutputVangeloovenMichal CalculateSteering(float DeltaT, ASurvivorPawn& Pawn) override;
 
 private:
-	
 	float AcceptanceRadiusSq = 50.f * 50.f; //0.5m acceptance
 };
 
@@ -53,7 +51,6 @@ class FleeVangeloovenMichal : public SteeringBehaviorVangeloovenMichal
 public:
 	virtual ~FleeVangeloovenMichal() override = default;
 
-protected:
 	virtual SteeringOutputVangeloovenMichal CalculateSteering(float DeltaT, ASurvivorPawn& Pawn) override;
 };
 
@@ -63,8 +60,9 @@ class FaceVangeloovenMichal : public SteeringBehaviorVangeloovenMichal
 public:
 	virtual ~FaceVangeloovenMichal() override = default;
 
-protected:
 	virtual SteeringOutputVangeloovenMichal CalculateSteering(float DeltaT, ASurvivorPawn& Pawn) override;
+
+	float MaxAngularDelta = 30.f; //return max when angle is above this
 };
 
 class BlendedSteeringVangeloovenMichal final : public SteeringBehaviorVangeloovenMichal

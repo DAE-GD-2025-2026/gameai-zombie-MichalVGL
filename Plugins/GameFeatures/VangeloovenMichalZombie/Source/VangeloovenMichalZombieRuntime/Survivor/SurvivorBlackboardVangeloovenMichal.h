@@ -77,15 +77,20 @@ public:
 	
 	USurvivorSteeringVangeloovenMichal();
 	
+	BlendedSteeringVangeloovenMichal* GetMoveBehavior() const;
+	FaceVangeloovenMichal* GetLookBehavior() const;
+	
 	SteeringBehaviorVangeloovenMichal* GetMoveTo() const;
 	SteeringBehaviorVangeloovenMichal* GetFlee() const;
 	SteeringBehaviorVangeloovenMichal* GetFace() const;
 	
-	std::unique_ptr<SteeringBehaviorVangeloovenMichal> MoveBehavior{};
-	std::unique_ptr<SteeringBehaviorVangeloovenMichal> LookBehavior{};
-	
 private:
 	
+	//the main steeringbehaviors
+	std::unique_ptr<SteeringBehaviorVangeloovenMichal> MoveBehavior{};
+	//std::unique_ptr<SteeringBehaviorVangeloovenMichal> LookBehavior{};
+	
+	//components used to build up the main behaviors
 	std::unique_ptr<SteeringBehaviorVangeloovenMichal> MoveTo{};
 	std::unique_ptr<SteeringBehaviorVangeloovenMichal> Flee{};
 	std::unique_ptr<SteeringBehaviorVangeloovenMichal> Face{};
@@ -241,12 +246,12 @@ struct SurvivorBlackboardVangeloovenMichal
 		return Blackboard->GetValueAsBool(SurvivorBBItemsVangeloovenMichal::AutoOrientToVelocity);
 	}
 
-	void SetCurrentTargetType(bool AutoOrient) const
+	void SetAutoOrientToVelocity(bool AutoOrient) const
 	{
 		Blackboard->SetValueAsBool(SurvivorBBItemsVangeloovenMichal::AutoOrientToVelocity, AutoOrient);
 	}
 	
-	// --- Auto Orient ---
+	// --- Auto Orient ---s
 	bool GetEnableMovement() const
 	{
 		return Blackboard->GetValueAsBool(SurvivorBBItemsVangeloovenMichal::EnableMovement);

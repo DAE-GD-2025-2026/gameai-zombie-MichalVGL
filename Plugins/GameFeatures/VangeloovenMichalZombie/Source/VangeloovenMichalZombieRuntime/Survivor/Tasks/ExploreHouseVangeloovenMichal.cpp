@@ -37,6 +37,7 @@ EBTNodeResult::Type UExploreHouseVangeloovenMichal::ExecuteTask(UBehaviorTreeCom
 	std::erase(SeenHouses->Houses, House);
 	ClearedHouses->Houses.push_back(House);
 	bb.SetCurrentTargetObject(nullptr);
+	bb.SetCurrentTargetType(ETargetTypeVangeloovenMichal::Null);
 	
 	return EBTNodeResult::Succeeded;
 }

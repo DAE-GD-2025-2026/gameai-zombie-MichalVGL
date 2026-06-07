@@ -67,8 +67,8 @@ void USurvivorSteeringComponentVangeloovenMichal::TickComponent(float DeltaTime,
 	if (!Steering)
 		return;
 
-	SteeringBehaviorVangeloovenMichal* Move = Steering->MoveBehavior.get();
-	SteeringBehaviorVangeloovenMichal* Look = Steering->LookBehavior.get();
+	auto* Move = Steering->GetMoveBehavior();
+	auto* Look = Steering->GetLookBehavior();
 
 	if (Move && Look)
 	{
@@ -95,13 +95,16 @@ void USurvivorSteeringComponentVangeloovenMichal::TickComponent(float DeltaTime,
 					FMath::Clamp(LookOutput.AngularVelocity, -1.f, 1.f) * AutoOrientInterpSpeed * DeltaTime
 				};
 
-				const FRotator CurrentRotation{Pawn->GetActorForwardVector().ToOrientationRotator()};
+				const FRotator CurrentRotation{Pawn->GetActorRotation()};
 				const FRotator DeltaRotation{0.f, DeltaYaw, 0.f};
 				const FRotator DesiredRotation{CurrentRotation + DeltaRotation};
 
 				//only yaw
 				if (!FMath::IsNearlyEqual(CurrentRotation.Yaw, DesiredRotation.Yaw))
 				{
+					//todo, delete
+					UE_LOG(LogTemp, Warning, TEXT("Rotating: current=%.1f desired=%.1f delta=%.2f"),
+					       CurrentRotation.Yaw, DesiredRotation.Yaw, DeltaYaw);
 					AIC->SetControlRotation((DesiredRotation));
 					Pawn->FaceRotation(DesiredRotation);
 				}

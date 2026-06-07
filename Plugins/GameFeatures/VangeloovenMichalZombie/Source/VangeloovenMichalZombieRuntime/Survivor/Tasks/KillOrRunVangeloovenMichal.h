@@ -4,21 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "ExecuteMoveToVangeloovenMichal.generated.h"
+#include "KillOrRunVangeloovenMichal.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class VANGELOOVENMICHALZOMBIERUNTIME_API UExecuteMoveToVangeloovenMichal : public UBTTaskNode
+class VANGELOOVENMICHALZOMBIERUNTIME_API UKillOrRunVangeloovenMichal : public UBTTaskNode
 {
 	GENERATED_BODY()
 	
 public:
-	UExecuteMoveToVangeloovenMichal();
-
+	UKillOrRunVangeloovenMichal();
+	
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
-
-	UPROPERTY(EditAnywhere, Category = "Steering")
-	float AcceptanceRadiusSq = 60.f * 60.f; // 0.6m
 };

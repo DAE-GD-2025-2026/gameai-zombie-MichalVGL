@@ -2,6 +2,7 @@
 
 #include "NavigationSystem.h"
 #include "Survivor/SurvivorPawn.h"
+#include "VangeloovenMichalZombieRuntime/Utils/LoggerVangeloovenMichal.h"
 
 // MoveTo
 
@@ -55,7 +56,7 @@ SteeringOutputVangeloovenMichal FaceVangeloovenMichal::CalculateSteering(float D
 	FVector2D ToTarget = Target.Position - FVector2D{Pawn.GetActorLocation()};
 	const float TargetAngle = FMath::RadiansToDegrees(FMath::Atan2(ToTarget.Y, ToTarget.X));
 	const float Angle = FMath::FindDeltaAngleDegrees(Pawn.GetActorRotation().Yaw, TargetAngle);
-	Steering.AngularVelocity = Angle;
+	Steering.AngularVelocity = FMath::Clamp(Angle / MaxAngularDelta, -1.f, 1.f);
 	
 	return Steering;
 }
@@ -77,7 +78,7 @@ SteeringOutputVangeloovenMichal BlendedSteeringVangeloovenMichal::CalculateSteer
 
 		if (!SingleSteering.LinearVelocity.IsNearlyZero())
 			SingleSteering.LinearVelocity.Normalize();
-
+		
 		SingleSteering *= Behaviour.Weight;
 		Output = Output + SingleSteering;
 	}
