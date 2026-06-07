@@ -17,5 +17,10 @@ class VANGELOOVENMICHALZOMBIERUNTIME_API UKillOrRunVangeloovenMichal : public UB
 public:
 	UKillOrRunVangeloovenMichal();
 	
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	float WeaponCooldown = 0.15f;
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	float AimThresholdDegrees = 15.f;
+	
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };

@@ -36,6 +36,8 @@ namespace SurvivorBBItemsVangeloovenMichal
 	inline const FName AutoOrientToVelocity{"AutoOrient"};
 	inline const FName EnableMovement{"EnableMovement"};
 	inline const FName RequestedItems{"RequestedItems"};
+	inline const FName FireCooldown{"FireCooldown"};
+	inline const FName EngageZombie{"EngageZombie"};
 }
 
 // =====================================================
@@ -251,7 +253,7 @@ struct SurvivorBlackboardVangeloovenMichal
 		Blackboard->SetValueAsBool(SurvivorBBItemsVangeloovenMichal::AutoOrientToVelocity, AutoOrient);
 	}
 	
-	// --- Auto Orient ---
+	// --- Enable Movement ---
 	bool GetEnableMovement() const
 	{
 		return Blackboard->GetValueAsBool(SurvivorBBItemsVangeloovenMichal::EnableMovement);
@@ -273,5 +275,27 @@ struct SurvivorBlackboardVangeloovenMichal
 	void SetRequestedItems(UItemsVangeloovenMichal* Objects) const
 	{
 		Blackboard->SetValue<UBlackboardKeyType_TrackedObjectVangeloovenMichal>(SurvivorBBItemsVangeloovenMichal::RequestedItems, Objects);
+	}
+	
+	// --- Fire Cooldown ---
+	float GetFireCooldown() const
+	{
+		return Blackboard->GetValueAsFloat(SurvivorBBItemsVangeloovenMichal::FireCooldown);
+	}
+
+	void SetFireCooldown(float FireCooldown) const
+	{
+		Blackboard->SetValueAsFloat(SurvivorBBItemsVangeloovenMichal::FireCooldown, FireCooldown);
+	}
+	
+	// --- Engage Zombie ---
+	bool GetEngageZombie() const
+	{
+		return Blackboard->GetValueAsBool(SurvivorBBItemsVangeloovenMichal::EngageZombie);
+	}
+
+	void SetEngageZombie(bool EngageZombie) const
+	{
+		Blackboard->SetValueAsBool(SurvivorBBItemsVangeloovenMichal::EngageZombie, EngageZombie);
 	}
 };

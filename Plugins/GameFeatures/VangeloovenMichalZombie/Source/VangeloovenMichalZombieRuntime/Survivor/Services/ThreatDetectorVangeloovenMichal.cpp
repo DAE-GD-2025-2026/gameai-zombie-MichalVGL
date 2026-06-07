@@ -3,6 +3,8 @@
 
 #include "ThreatDetectorVangeloovenMichal.h"
 
+#include <Programs/UnrealBuildAccelerator/Core/Public/UbaBase.h>
+
 #include "AIController.h"
 #include "VangeloovenMichalZombieRuntime/Survivor/SurvivorBlackboardVangeloovenMichal.h"
 #include "VangeloovenMichalZombieRuntime/ZombieExtension/ZombieBlackboardVangeloovenMichal.h"
@@ -12,31 +14,33 @@ void UThreatDetectorVangeloovenMichal::TickNode(UBehaviorTreeComponent& OwnerCom
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
-	SurvivorBlackboardVangeloovenMichal bb{OwnerComp.GetBlackboardComponent()};
+	SurvivorBlackboardVangeloovenMichal BB{OwnerComp.GetBlackboardComponent()};
 
-	if (!bb.Blackboard)
+	if (!BB.Blackboard)
 		return;
 
-	UZombiesVangeloovenMichal* ThreatZombies = bb.GetThreateningZombies();
+	UZombiesVangeloovenMichal* ThreatZombies = BB.GetThreateningZombies();
 	if (!ThreatZombies)
 	{
 		ThreatZombies = NewObject<UZombiesVangeloovenMichal>();
-		bb.SetThreateningZombies(ThreatZombies);
+		BB.SetThreateningZombies(ThreatZombies);
 	}
 	ThreatZombies->Zombies.clear();
 	
-	if (!bb.GetSeenZombies())
+	if (!BB.GetSeenZombies())
 		return;
 	
-	std::ranges::for_each(bb.GetSeenZombies()->Zombies, [&](ABaseZombie* Zombie)
+	std::ranges::for_each(BB.GetSeenZombies()->Zombies, [&](ABaseZombie* Zombie)
 	{
 		AAIController* AIC = Cast<AAIController>(Zombie->GetController());
 		if (!AIC) 
 			return;
 		
-		ZombieBlackboardVangeloovenMichal bb{AIC->GetBlackboardComponent()};
+		ZombieBlackboardVangeloovenMichal ZBB{AIC->GetBlackboardComponent()};
 		
-		if (bb.GetSurvivor()) //survivor is set -> zombie is chasing the survivor
+		float DistanceToSurvivor = FVector::Dist(ZBB.GetActor()->GetActorLocation(), BB.GetActor()->GetActorLocation());
+		
+		if (ZBB.GetSurvivor() && DistanceToSurvivor < MaxDistance) //survivor is set -> zombie is chasing the survivor
 		{
 			ThreatZombies->Zombies.push_back(Zombie);
 		}

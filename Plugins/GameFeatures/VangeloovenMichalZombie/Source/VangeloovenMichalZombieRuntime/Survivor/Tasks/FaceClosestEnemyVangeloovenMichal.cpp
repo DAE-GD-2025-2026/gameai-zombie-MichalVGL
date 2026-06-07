@@ -64,7 +64,16 @@ EBTNodeResult::Type UFaceClosestEnemyVangeloovenMichal::ExecuteTask(UBehaviorTre
 		return EBTNodeResult::Failed;
 	
 	MainMoveBlend->SetWeight(Flee, FleeWeight);
-	MainMoveBlend->SetWeight(MoveTo, MoveToWeight);
+	MainMoveBlend->SetWeight(MoveTo, 1.f);
+	
+	
+	//todo, remove
+	UE_LOG(LogTemp, Warning, TEXT("Dist=%.0f T=%.2f FleeWeight=%.2f Close=%.0f Far=%.0f"),
+	Distance,
+	(Distance - CloseFleeDistance) / (FarFleeDistance - CloseFleeDistance),
+	FleeWeight,
+	CloseFleeDistance,
+	FarFleeDistance);
 	
 	// Enable the rotation towards the zombie
 	BB.SetAutoOrientToVelocity(false);
@@ -79,5 +88,5 @@ EBTNodeResult::Type UFaceClosestEnemyVangeloovenMichal::ExecuteTask(UBehaviorTre
 	Face->SetTarget(ZombieTarget);
 	Flee->SetTarget(ZombieTarget);
 	
-	return EBTNodeResult::Failed;
+	return EBTNodeResult::Succeeded;
 }

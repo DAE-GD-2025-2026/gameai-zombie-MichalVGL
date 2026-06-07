@@ -62,7 +62,7 @@ public:
 
 	virtual SteeringOutputVangeloovenMichal CalculateSteering(float DeltaT, ASurvivorPawn& Pawn) override;
 
-	float MaxAngularDelta = 30.f; //return max when angle is above this
+	float MaxAngularDelta = 5.f; //return max when angle is above this
 };
 
 class BlendedSteeringVangeloovenMichal final : public SteeringBehaviorVangeloovenMichal

@@ -4,23 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "Items/ItemType.h"
-#include "MoveToClosestItemVangeloovenMichal.generated.h"
+#include "ResumeNormalMovementVangeloovenMichal.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class VANGELOOVENMICHALZOMBIERUNTIME_API UMoveToClosestItemVangeloovenMichal : public UBTTaskNode
+class VANGELOOVENMICHALZOMBIERUNTIME_API UResumeNormalMovementVangeloovenMichal : public UBTTaskNode
 {
 	GENERATED_BODY()
-
-public:
 	
-	UPROPERTY(EditAnywhere, Category = "Type")
-	EItemType Type;
-
-	UMoveToClosestItemVangeloovenMichal();
+public:
+	UResumeNormalMovementVangeloovenMichal();
 	
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };

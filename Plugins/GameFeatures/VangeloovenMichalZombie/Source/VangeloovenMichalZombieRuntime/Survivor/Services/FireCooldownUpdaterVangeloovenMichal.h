@@ -4,20 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTService.h"
-#include "ThreatDetectorVangeloovenMichal.generated.h"
+#include "FireCooldownUpdaterVangeloovenMichal.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class VANGELOOVENMICHALZOMBIERUNTIME_API UThreatDetectorVangeloovenMichal : public UBTService
+class VANGELOOVENMICHALZOMBIERUNTIME_API UFireCooldownUpdaterVangeloovenMichal : public UBTService
 {
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditAnywhere, Category = "Threat Distance")
-	float MaxDistance;
-
+	UFireCooldownUpdaterVangeloovenMichal();
+	
 protected:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 };

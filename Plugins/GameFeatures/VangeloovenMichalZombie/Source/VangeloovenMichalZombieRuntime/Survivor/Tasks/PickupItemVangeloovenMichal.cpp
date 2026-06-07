@@ -18,7 +18,11 @@ EBTNodeResult::Type UPickupItemVangeloovenMichal::ExecuteTask(UBehaviorTreeCompo
 	
 	ABaseItem* Item = Cast<ABaseItem>(BB.GetCurrentTargetObject());
 	if (!Item || !IsValid(Item))
+	{
+		BB.SetCurrentTargetObject(nullptr);
+		BB.SetCurrentTargetType(ETargetTypeVangeloovenMichal::Null);
 		return EBTNodeResult::Failed;
+	}
 	
 	UInventoryComponent* InventoryComp = BB.GetActor()->GetComponentByClass<UInventoryComponent>();
 	if (!InventoryComp)
