@@ -48,7 +48,6 @@ EBTNodeResult::Type UPickupItemVangeloovenMichal::ExecuteTask(UBehaviorTreeCompo
 	}
 	
 	InventoryComp->GrabItem(Index, Item);
-	InventoryComp->UseItem(Index);
 
 	if (auto* SeenItems = BB.GetSeenItems())
 	{
