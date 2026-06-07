@@ -30,13 +30,28 @@ void UThreatDetectorVangeloovenMichal::TickNode(UBehaviorTreeComponent& OwnerCom
 	if (!BB.GetSeenZombies())
 		return;
 	
+	//clean up seen zombies
+	if (auto* SeenZombies = BB.GetSeenZombies())
+	{
+		std::erase_if(SeenZombies->Zombies, [](ABaseZombie* Z)
+		{
+			return !IsValid(Z);
+		});
+	}
+	
+	//add if they threaten the survivor
 	std::ranges::for_each(BB.GetSeenZombies()->Zombies, [&](ABaseZombie* Zombie)
 	{
+		if (!IsValid(Zombie)) 
+			return;
+		
 		AAIController* AIC = Cast<AAIController>(Zombie->GetController());
 		if (!AIC) 
 			return;
 		
 		ZombieBlackboardVangeloovenMichal ZBB{AIC->GetBlackboardComponent()};
+		if (!ZBB.Blackboard) 
+			return;
 		
 		float DistanceToSurvivor = FVector::Dist(ZBB.GetActor()->GetActorLocation(), BB.GetActor()->GetActorLocation());
 		
