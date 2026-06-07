@@ -3,11 +3,13 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Items/BaseItem.h"
 #include "UObject/Object.h"
+#include "VangeloovenMichalZombieRuntime/Steering/SteeringBehaviorVangeloovenMichal.h"
 #include "VangeloovenMichalZombieRuntime/Utils/BlackboardExtensionsVangeloovenMichal.h"
 #include "VangeloovenMichalZombieRuntime/Utils/TargetTypesVangeloovenMichal.h"
 #include "Village/House/House.h"
@@ -30,6 +32,9 @@ namespace SurvivorBBItemsVangeloovenMichal
 	inline const FName CurrentTargetType{"CurrentTargetType"};
 	inline const FName CurrentTargetObject{"CurrentTargetObject"};
 	inline const FName ClearedHouses{"ClearedHouses"};
+	inline const FName SteeringBehavior{"SteeringBehavior"};
+	inline const FName AutoOrientToVelocity{"AutoOrient"};
+	inline const FName EnableMovement{"EnableMovement"};
 }
 
 // =====================================================
@@ -61,6 +66,30 @@ class VANGELOOVENMICHALZOMBIERUNTIME_API UZombiesVangeloovenMichal : public UObj
 
 public:
 	std::vector<ABaseZombie*> Zombies{};
+};
+
+UCLASS()
+class VANGELOOVENMICHALZOMBIERUNTIME_API USurvivorSteeringVangeloovenMichal : public UObject
+{
+	GENERATED_BODY()
+
+public:
+	
+	USurvivorSteeringVangeloovenMichal();
+	
+	SteeringBehaviorVangeloovenMichal* GetMoveTo() const;
+	SteeringBehaviorVangeloovenMichal* GetFlee() const;
+	SteeringBehaviorVangeloovenMichal* GetFace() const;
+	
+	std::unique_ptr<SteeringBehaviorVangeloovenMichal> MoveBehavior{};
+	std::unique_ptr<SteeringBehaviorVangeloovenMichal> LookBehavior{};
+	
+private:
+	
+	std::unique_ptr<SteeringBehaviorVangeloovenMichal> MoveTo{};
+	std::unique_ptr<SteeringBehaviorVangeloovenMichal> Flee{};
+	std::unique_ptr<SteeringBehaviorVangeloovenMichal> Face{};
+	
 };
 
 // =====================================================
@@ -190,5 +219,41 @@ struct SurvivorBlackboardVangeloovenMichal
 	{
 		Blackboard->SetValue<UBlackboardKeyType_TrackedObjectVangeloovenMichal>(
 			SurvivorBBItemsVangeloovenMichal::ClearedHouses, Houses);
+	}
+	
+	// --- Steering Behavior ---
+	USurvivorSteeringVangeloovenMichal* GetSteeringBehavior() const
+	{
+		return Cast<USurvivorSteeringVangeloovenMichal>(
+			Blackboard->GetValue<UBlackboardKeyType_TrackedObjectVangeloovenMichal>(
+				SurvivorBBItemsVangeloovenMichal::SteeringBehavior));
+	}
+
+	void SetSteeringBehavior(USurvivorSteeringVangeloovenMichal* Steering) const
+	{
+		Blackboard->SetValue<UBlackboardKeyType_TrackedObjectVangeloovenMichal>(
+			SurvivorBBItemsVangeloovenMichal::SteeringBehavior, Steering);
+	}
+	
+	// --- Auto Orient ---
+	bool GetAutoOrientToVelocity() const
+	{
+		return Blackboard->GetValueAsBool(SurvivorBBItemsVangeloovenMichal::AutoOrientToVelocity);
+	}
+
+	void SetCurrentTargetType(bool AutoOrient) const
+	{
+		Blackboard->SetValueAsBool(SurvivorBBItemsVangeloovenMichal::AutoOrientToVelocity, AutoOrient);
+	}
+	
+	// --- Auto Orient ---
+	bool GetEnableMovement() const
+	{
+		return Blackboard->GetValueAsBool(SurvivorBBItemsVangeloovenMichal::EnableMovement);
+	}
+
+	void SetEnableMovement(bool EnableMovement) const
+	{
+		Blackboard->SetValueAsBool(SurvivorBBItemsVangeloovenMichal::EnableMovement, EnableMovement);
 	}
 };
