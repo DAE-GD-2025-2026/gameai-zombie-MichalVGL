@@ -4,21 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "ReachTargetVangeloovenMichal.generated.h"
+#include "PickupItemVangeloovenMichal.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class VANGELOOVENMICHALZOMBIERUNTIME_API UReachTargetVangeloovenMichal : public UBTTaskNode
+class VANGELOOVENMICHALZOMBIERUNTIME_API UPickupItemVangeloovenMichal : public UBTTaskNode
 {
 	GENERATED_BODY()
-	
+
 public:
-	UReachTargetVangeloovenMichal();
+	UPickupItemVangeloovenMichal();
 	
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
-
-	UPROPERTY(EditAnywhere, Category = "Steering")
-	float AcceptanceRadiusSq = 30.f * 30.f; // 0.3m
 };

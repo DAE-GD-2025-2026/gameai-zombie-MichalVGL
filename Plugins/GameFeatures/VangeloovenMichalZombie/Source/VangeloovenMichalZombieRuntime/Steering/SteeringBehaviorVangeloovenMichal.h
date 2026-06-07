@@ -42,7 +42,7 @@ public:
 	virtual SteeringOutputVangeloovenMichal CalculateSteering(float DeltaT, ASurvivorPawn& Pawn) override;
 
 private:
-	float AcceptanceRadiusSq = 50.f * 50.f; //0.5m acceptance
+	float AcceptanceRadiusSq = 10.f * 10.f; //0.1m acceptance
 };
 
 //simple move away from target

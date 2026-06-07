@@ -75,8 +75,6 @@ void USurvivorSteeringComponentVangeloovenMichal::TickComponent(float DeltaTime,
 		const SteeringOutputVangeloovenMichal MoveOutput = Move->CalculateSteering(DeltaTime, *Pawn);
 		const SteeringOutputVangeloovenMichal LookOutput = Look->CalculateSteering(DeltaTime, *Pawn);
 
-		//Pawn->AddMovementInput(FVector{MoveOutput.LinearVelocity, 0.f});
-
 		UFloatingPawnMovement* FloatingMovement =
 			Cast<UFloatingPawnMovement>(Pawn->GetMovementComponent());
 
@@ -102,9 +100,6 @@ void USurvivorSteeringComponentVangeloovenMichal::TickComponent(float DeltaTime,
 				//only yaw
 				if (!FMath::IsNearlyEqual(CurrentRotation.Yaw, DesiredRotation.Yaw))
 				{
-					//todo, delete
-					UE_LOG(LogTemp, Warning, TEXT("Rotating: current=%.1f desired=%.1f delta=%.2f"),
-					       CurrentRotation.Yaw, DesiredRotation.Yaw, DeltaYaw);
 					AIC->SetControlRotation((DesiredRotation));
 					Pawn->FaceRotation(DesiredRotation);
 				}

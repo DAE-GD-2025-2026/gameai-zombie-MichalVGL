@@ -35,6 +35,7 @@ namespace SurvivorBBItemsVangeloovenMichal
 	inline const FName SteeringBehavior{"SteeringBehavior"};
 	inline const FName AutoOrientToVelocity{"AutoOrient"};
 	inline const FName EnableMovement{"EnableMovement"};
+	inline const FName RequestedItems{"RequestedItems"};
 }
 
 // =====================================================
@@ -94,7 +95,6 @@ private:
 	std::unique_ptr<SteeringBehaviorVangeloovenMichal> MoveTo{};
 	std::unique_ptr<SteeringBehaviorVangeloovenMichal> Flee{};
 	std::unique_ptr<SteeringBehaviorVangeloovenMichal> Face{};
-	
 };
 
 // =====================================================
@@ -251,7 +251,7 @@ struct SurvivorBlackboardVangeloovenMichal
 		Blackboard->SetValueAsBool(SurvivorBBItemsVangeloovenMichal::AutoOrientToVelocity, AutoOrient);
 	}
 	
-	// --- Auto Orient ---s
+	// --- Auto Orient ---
 	bool GetEnableMovement() const
 	{
 		return Blackboard->GetValueAsBool(SurvivorBBItemsVangeloovenMichal::EnableMovement);
@@ -260,5 +260,18 @@ struct SurvivorBlackboardVangeloovenMichal
 	void SetEnableMovement(bool EnableMovement) const
 	{
 		Blackboard->SetValueAsBool(SurvivorBBItemsVangeloovenMichal::EnableMovement, EnableMovement);
+	}
+	
+	// --- Requested Items ---
+	UItemsVangeloovenMichal* GetRequestedItems() const
+	{
+		return Cast<UItemsVangeloovenMichal>(
+			Blackboard->GetValue<UBlackboardKeyType_TrackedObjectVangeloovenMichal>(SurvivorBBItemsVangeloovenMichal::RequestedItems)
+			);
+	}
+
+	void SetRequestedItems(UItemsVangeloovenMichal* Objects) const
+	{
+		Blackboard->SetValue<UBlackboardKeyType_TrackedObjectVangeloovenMichal>(SurvivorBBItemsVangeloovenMichal::RequestedItems, Objects);
 	}
 };

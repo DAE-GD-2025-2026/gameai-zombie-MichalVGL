@@ -37,5 +37,7 @@ EBTNodeResult::Type UKillOrRunVangeloovenMichal::ExecuteTask(UBehaviorTreeCompon
 	
 	//if we shot and killed the zombie, disable sprint
 	
+	//todo add shooting 
+	
 	return EBTNodeResult::Succeeded;
 }
